@@ -6,7 +6,7 @@ lava_heating_tower.minable = {mining_time = 0.5, result = "lava-heating-tower"}
 local fluid_bizox = {
     volume = 1000,
     production_type = "input-output",
-    filter = "lava",
+    filter = "filtered-lava",
     pipe_connections = {
         -- North ×2
         { flow_direction = "input-output", direction = defines.direction.north, position = {-1, -1} },
@@ -102,8 +102,36 @@ if data.raw.recipe["acid-neutralisation"] then
   end
 end
 
+-- Filtered lava: burnable fluid produced by sluicing raw lava in a foundry
 if data.raw.fluid["lava"] then
-  data.raw.fluid["lava"].fuel_value = settings.startup['vlp-lava-energy'].value .. "kJ"
-  --data.raw.fluid["lava"].fuel_value = "kJ" -- Energy per unit of lava
-  data.raw.fluid["lava"].fuel_category = "lava" -- Or create custom category
+  local filtered_lava = table.deepcopy(data.raw.fluid["lava"])
+  filtered_lava.name = "filtered-lava"
+  filtered_lava.fuel_value = settings.startup['vlp-lava-energy'].value .. "kJ"
+  filtered_lava.order = (filtered_lava.order or "z") .. "-b[filtered]"
+
+  data:extend({filtered_lava})
+
+  data:extend({
+    {
+      type = "recipe",
+      name = "lava-sluicing",
+      category = "metallurgy",
+      enabled = false,
+      energy_required = 2,
+      ingredients = {{type = "fluid", name = "lava", amount = 500}},
+      results = {
+        {type = "fluid", name = "filtered-lava", amount = 480},
+        {type = "item", name = "stone", amount = 10},
+      },
+      main_product = "filtered-lava",
+      allow_productivity = false,
+      subgroup = "vulcanus-processes",
+      order = "a[melting]-c[lava-sluicing]",
+    }
+  })
+
+  table.insert(data.raw.technology["tungsten-carbide"].effects, {
+    type = "unlock-recipe",
+    recipe = "lava-sluicing"
+  })
 end
