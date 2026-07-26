@@ -111,6 +111,14 @@ if data.raw.fluid["lava"] then
 
   data:extend({filtered_lava})
 
+  local sluicing_results = {
+    {type = "fluid", name = "filtered-lava", amount = settings.startup["vlp-sluicing-output"].value},
+  }
+  local stone_amount = settings.startup["vlp-sluicing-stone"].value
+  if stone_amount > 0 then
+    table.insert(sluicing_results, {type = "item", name = "stone", amount = stone_amount})
+  end
+
   data:extend({
     {
       type = "recipe",
@@ -119,10 +127,7 @@ if data.raw.fluid["lava"] then
       enabled = false,
       energy_required = 2,
       ingredients = {{type = "fluid", name = "lava", amount = 500}},
-      results = {
-        {type = "fluid", name = "filtered-lava", amount = 480},
-        {type = "item", name = "stone", amount = 10},
-      },
+      results = sluicing_results,
       main_product = "filtered-lava",
       allow_productivity = false,
       subgroup = "vulcanus-processes",

@@ -12,12 +12,30 @@ data:extend({
     order = "a-a"
   },
   {
-    type = "int-setting", 
+    type = "int-setting",
     name = "vlp-lava-energy",
     setting_type = "startup",
     default_value = 180,
     minimum_value = 1,
     maximum_value = 1000,
     order = "a-b"
+  },
+  {
+    type = "int-setting",
+    name = "vlp-sluicing-stone",
+    setting_type = "startup",
+    default_value = 10,
+    minimum_value = 0,
+    maximum_value = 100,
+    order = "a-c"
+  },
+  {
+    type = "int-setting",
+    name = "vlp-sluicing-output",
+    setting_type = "startup",
+    default_value = 480,
+    minimum_value = 1,
+    maximum_value = 500,
+    order = "a-d"
   }
 })
