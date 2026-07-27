@@ -125,7 +125,7 @@ if data.raw.fluid["lava"] then
       name = "lava-sluicing",
       category = "metallurgy",
       enabled = false,
-      energy_required = 2,
+      energy_required = 4,
       ingredients = {{type = "fluid", name = "lava", amount = 500}},
       results = sluicing_results,
       main_product = "filtered-lava",
